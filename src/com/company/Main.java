@@ -11,29 +11,29 @@ public class Main {
         Scanner keyboard = new Scanner(System.in);
 
         displayOptions(1); // display menu1
-        //String input = keyboard.next();
 
         int codeType = 0;
-        int inputA = getUserChoice();
+        int input = getUserChoice();
 
-        if (inputA == 0) { // fixme later lol
-            inputA += 5;
+        if (input == 0) { // stops while loop from terminating if initial input is default
+            input += 5;
         }
 
-        while (inputA != 0) {
+        while (input != 0) {
 
-            if (inputA == 1) {
+            if (input == 1) {
 
-                separator(inputA);
-
-            }
-            if (inputA == 2) {
-
-                separator(inputA);
+                separator(input);
 
             }
+            if (input == 2) {
+
+                separator(input);
+
+            }
+
             displayOptions(1); // display menu1
-            inputA = getUserChoice();
+            input = getUserChoice();
 
         } // end of while
 
@@ -46,20 +46,19 @@ public class Main {
         if (displayType == 1) { // menu1
             System.out.println("#1 to encode or decode a file");
             System.out.println("#2 to find wordCount");
-            System.out.println("#3 to quit.");
         }
 
         if (displayType == 2) { // menu2
-            System.out.println("#1 to select an output file.");
-            System.out.println("#2 to create an output file named output.txt ");
-            System.out.println("#3 to quit and return to main menu");
-        }
-
-        if (displayType == 3) { // menu3
             System.out.println("#1 to select an input file.");
             System.out.println("#2 to use a File named input.txt");
-            System.out.println("#3 to quit and return to main menu");
+
         }
+        if (displayType == 3) { // menu3
+            System.out.println("#1 to select an output file.");
+            System.out.println("#2 to create an output file named output.txt");
+        }
+
+        System.out.println("#3 to quit");
 
     } // end of displayOptions
 
@@ -100,19 +99,18 @@ public class Main {
         Scanner keyboard = new Scanner(System.in);
         String inFileName = "input.txt"; // default initializer, unchanged unless user selects option 1 from getMenuChoice menu3
 
-        displayOptions(3); // display menu3
+        displayOptions(2); // display menu2
         int fileType = getUserChoice();
 
         if (fileType == 0) { // if user chose to quit
             return;
         } else if (fileType == 1) { // if user chose to input file
-            System.out.println("Please enter the name of the file you want to output to. make sure to include the .txt");
+            System.out.println("enter the name of the file you want to input.");
             inFileName = keyboard.next();
         }
 
         try { // error try incase file selected does not exist
             String source = new Scanner(new File(inFileName)).useDelimiter("\\Z").next(); // scans file as single string
-
 
             char arr[] = source.toCharArray(); // separates file into characters
             int wordCount = 1; // initial word count of 1
@@ -125,7 +123,9 @@ public class Main {
 
             } // end of for
 
-            System.out.println("Your file has " + wordCount + " words.");
+            if (codeType == 2) {
+                System.out.println("Your file has " + wordCount + " words.");
+            }
 
             if (codeType == 1) { // if user selects code/decode file
                 coder(arr);
@@ -159,14 +159,12 @@ public class Main {
 
         } // end of for (A)
 
-        System.out.println(arr); // tester
-
         writeToFile(arr);
     } // end of coder
 
     public static void writeToFile(char[] arr) throws IOException {
 
-        displayOptions(2); // display menu2
+        displayOptions(3); // display menu3
         int fileType = getUserChoice();
 
         Scanner keyboard = new Scanner(System.in);
@@ -178,7 +176,7 @@ public class Main {
         }
 
         if (fileType == 1) { // if user chose to input file name
-            System.out.println("Please enter the name of the file you want to output to. make sure to include the .txt");
+            System.out.println("Please enter the name of the file you want to output to.");
             outFileName = keyboard.next();
         }
 
