@@ -1,190 +1,24 @@
 package com.company;
 
-import java.lang.*;
+import java.io.IOException;
 import java.util.Scanner;
-import java.io.*;
 
 public class Main {
 
+    // alright ill keep it short, messed around way too much on the project.
+    // wasn't going to submit but was convinced otherwise.
+    // program has no options, will read a file if that file provides dog ID's
+    // gives a report sorted by ID
+    // and writes that list to a file named "masterFile.txt
+    //
+
     public static void main(String[] args) throws IOException {
 
-        Scanner keyboard = new Scanner(System.in);
+        Dog[] myDogs = DogFile.getAllDogs();
+        Dog.sortDogs(myDogs);
+        WriteToFile.writeDogInfo(myDogs);
+        Report.Report(myDogs);
 
-        displayOptions(1); // display menu1
-
-        int codeType = 0;
-        int input = getUserChoice();
-
-        if (input == 0) { // stops while loop from terminating if initial input is default
-            input += 5;
-        }
-
-        while (input != 0) {
-
-            if (input == 1) {
-
-                separator(input);
-
-            }
-            if (input == 2) {
-
-                separator(input);
-
-            }
-
-            displayOptions(1); // display menu1
-            input = getUserChoice();
-
-        } // end of while
-
-    } // end of main
-
-    public static void displayOptions(int displayType) {
-
-        System.out.println("Please select an option to continue");
-
-        if (displayType == 1) { // menu1
-            System.out.println("#1 to encode or decode a file");
-            System.out.println("#2 to find wordCount");
-        }
-
-        if (displayType == 2) { // menu2
-            System.out.println("#1 to select an input file.");
-            System.out.println("#2 to use a File named input.txt");
-
-        }
-        if (displayType == 3) { // menu3
-            System.out.println("#1 to select an output file.");
-            System.out.println("#2 to create an output file named output.txt");
-        }
-
-        System.out.println("#3 to quit");
-
-    } // end of displayOptions
-
-    public static int getUserChoice() { // general menu used for input for most methods
-
-        int inputType = 0;
-
-        Scanner keyboard = new Scanner(System.in);
-        String input = keyboard.next();
-
-        switch (input) {
-
-            case "1":
-                inputType = 1;
-                break;
-
-            case "2":
-                inputType = 2;
-
-                break;
-
-            case "3":
-                inputType = 0;
-                break;
-
-            default:
-                System.out.print("Error selected, returning to main menu");
-                inputType = 0;
-                break;
-
-        } // end of switch
-
-        return inputType;
-    } // end of getUserChoice
-
-    public static void separator(int codeType) throws IOException {
-
-        Scanner keyboard = new Scanner(System.in);
-        String inFileName = "input.txt"; // default initializer, unchanged unless user selects option 1 from getMenuChoice menu3
-
-        displayOptions(2); // display menu2
-        int fileType = getUserChoice();
-
-        if (fileType == 0) { // if user chose to quit
-            return;
-        } else if (fileType == 1) { // if user chose to input file
-            System.out.println("enter the name of the file you want to input.");
-            inFileName = keyboard.next();
-        }
-
-        try { // error try incase file selected does not exist
-            String source = new Scanner(new File(inFileName)).useDelimiter("\\Z").next(); // scans file as single string
-
-            char arr[] = source.toCharArray(); // separates file into characters
-            int wordCount = 1; // initial word count of 1
-
-            for (int i = 0; i < arr.length; i++) {
-
-                if (arr[i] == ' ') { // if there is a space, wordCount increases by 1
-                    wordCount++;
-                }
-
-            } // end of for
-
-            if (codeType == 2) {
-                System.out.println("Your file has " + wordCount + " words.");
-            }
-
-            if (codeType == 1) { // if user selects code/decode file
-                coder(arr);
-            }
-
-        } // end of try
-        catch (IOException ex) { // catches IO exception returns to main menu if true
-            System.out.println(ex.toString());
-            System.out.println("Could not find file " + inFileName);
-        } // end of catch
-
-    } // end of separator
-
-    public static void coder(char[] arr) throws IOException {
-
-        char[] alphabet = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'}; // normal alphabet
-        char[] rot13 = {'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm'}; // rot13 cipher
-
-        for (int i = 0; i < arr.length; i++) { // (A) for all characters in the file
-
-            for (int j = 0; j < 26; j++) { // (B) // for all letters in the alphabet
-
-                if (arr[i] == alphabet[j]) {// sets array elements if alphabet matches rot13
-
-                    arr[i] = rot13[j];
-
-                    break;
-                }
-
-            } // end of for (B)
-
-        } // end of for (A)
-
-        writeToFile(arr);
-    } // end of coder
-
-    public static void writeToFile(char[] arr) throws IOException {
-
-        displayOptions(3); // display menu3
-        int fileType = getUserChoice();
-
-        Scanner keyboard = new Scanner(System.in);
-
-        String outFileName = "output.txt"; // default file initializer, remains unchanged if user selects option 2 from menu2
-
-        if (fileType == 0) { // if user chose to quit
-            return;
-        }
-
-        if (fileType == 1) { // if user chose to input file name
-            System.out.println("Please enter the name of the file you want to output to.");
-            outFileName = keyboard.next();
-        }
-
-        PrintWriter outFile = new PrintWriter(outFileName);
-        outFile.print(arr); // prints array to outfile selected
-
-        outFile.close(); // closes file
-
-    } // end of writeToFile
+    } // end of void main
 
 } // end of class main
